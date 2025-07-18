@@ -48,15 +48,20 @@ Contains UI components divided into two sub-layers:
 - **Presentation**: Single, reusable components for specific UI elements
 
 ### 2. Use Cases Layer
-Handles business logic through custom hooks, designed for flexibility and reusability
+Handles business logic through custom hooks, designed for flexibility and reusability. Handle store updates and side effects here. Avoid create store folder on feature level, use Zustand for global state management.
 
 ### 3. Repositories Layer
 Middleware layer that communicates directly with backend services using React Query for state management and caching
+
+```typescript
 
 ### 4. Models Layer
 Contains all models, interfaces, types, and dummy data specific to each feature for better encapsulation
 
 ## Implementation Guidelines
+
+### API Creation
+Always use server actions when creating a new API, unless instructed to create it using the default Next.js route.
 
 ### 1. View Layer
 
@@ -185,6 +190,22 @@ export function useUpdateUserProfile() {
     },
   })
 }
+
+Custom hooks for Zustand state management:
+
+// app/src/user/usecases/useUserStore.ts
+import create from 'zustand'
+
+interface UserState {
+  currentUser: UserProfile | null
+  setCurrentUser: (user: UserProfile | null) => void
+}
+
+export const useUserStore = create<UserState>((set) => ({
+  currentUser: null,
+  setCurrentUser: (user) => set({ currentUser: user }),
+}))
+
 ```
 
 ### 3. Repositories Layer
