@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -12,18 +13,11 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+        <div className="w-full max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4">Welcome to TicketMine</h1>
+          <p className="mb-8 text-lg text-muted-foreground">Discover and book tickets for the best concerts and events!</p>
+          <Link href="/events" className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition mb-10">Browse Events</Link>
+        </div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
