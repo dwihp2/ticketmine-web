@@ -1,12 +1,12 @@
 import { db } from '../connection';
-import { 
-  users, 
-  venues, 
-  eventCategories, 
-  artists, 
-  events, 
-  eventArtists, 
-  ticketTypes, 
+import {
+  users,
+  venues,
+  eventCategories,
+  artists,
+  events,
+  eventArtists,
+  ticketTypes,
   promotionalCodes,
   orders,
   orderItems,
@@ -517,7 +517,7 @@ const seedData = async () => {
     // 7. Seed Ticket Types
     console.log('🎫 Seeding ticket types...');
     const ticketTypeData = [];
-    
+
     // Event 1: Electric Storm - Rock Concert
     ticketTypeData.push(
       {
@@ -783,7 +783,7 @@ const seedData = async () => {
     console.log('  - 5 Events with comprehensive details');
     console.log('  - 13 Ticket types with various pricing');
     console.log('  - 3 Promotional codes');
-    
+
   } catch (error) {
     console.error('❌ Error seeding database:', error);
     throw error;
