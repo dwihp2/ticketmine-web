@@ -7,13 +7,11 @@ export function useUpdateEvent() {
 
   return useMutation({
     mutationFn: (data: UpdateEventInput) => updateEvent(data),
-    onSuccess: (updatedEvent) => {
+    onSuccess: () => {
+      // Only invalidate the events list, not the detail query to prevent infinite loop
       queryClient.invalidateQueries({ queryKey: ['events'] });
-      queryClient.invalidateQueries({ queryKey: ['event', 'detail', updatedEvent.id] });
-      console.log("✅ Event updated successfully");
-    },
-    onError: (error) => {
-      console.error("❌ Event update failed:", error.message);
+      // Don't invalidate the detail query to prevent re-fetching and infinite loop
+      // queryClient.invalidateQueries({ queryKey: ['event', 'detail', updatedEvent.id] });
     },
   });
 }

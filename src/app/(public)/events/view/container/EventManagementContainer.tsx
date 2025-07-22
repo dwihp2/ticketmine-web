@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useEvents } from '../../usecases/useEvents';
 import { EventManagementCard } from '../presentation/EventManagementCard';
-import { EventForm } from '../presentation/EventForm';
+import { UpsertEventForm } from '../presentation/UpsertEventForm';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function EventManagementContainer() {
@@ -29,7 +29,7 @@ export function EventManagementContainer() {
             ← Back to Management
           </button>
         </div>
-        <EventForm onSuccess={handleCreateSuccess} onCancel={handleCreateCancel} />
+        <UpsertEventForm onSuccess={handleCreateSuccess} onCancel={handleCreateCancel} />
       </div>
     );
   }

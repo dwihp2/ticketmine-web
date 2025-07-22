@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { EventForm } from '../presentation/EventForm';
+import { UpsertEventForm } from '../presentation/UpsertEventForm';
 import { EventListContainer } from './EventListContainer';
 
 export function EventCreateContainer() {
@@ -18,7 +18,7 @@ export function EventCreateContainer() {
   if (showForm) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <EventForm onSuccess={handleSuccess} onCancel={handleCancel} />
+        <UpsertEventForm onSuccess={handleSuccess} onCancel={handleCancel} />
       </div>
     );
   }

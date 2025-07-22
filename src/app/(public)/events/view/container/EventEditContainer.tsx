@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEventDetail } from '../../usecases/useEventDetail';
-import { EventEditForm } from '../presentation/EventEditForm';
+import { UpsertEventForm } from '../presentation/UpsertEventForm';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface EventEditContainerProps {
@@ -86,7 +86,7 @@ export function EventEditContainer({ eventId }: EventEditContainerProps) {
         </button>
       </div>
 
-      <EventEditForm
+      <UpsertEventForm
         event={event}
         onSuccess={handleSuccess}
         onCancel={handleCancel}

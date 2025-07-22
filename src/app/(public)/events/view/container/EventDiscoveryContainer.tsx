@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useEvents } from '../../usecases/useEvents';
 import { useVenues } from '../../usecases/useVenues';
-import { EnhancedEventCard } from '../presentation/EnhancedEventCard';
+import { EventCard } from '../presentation/EventCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
 import type { Event } from '../../models/interfaces/event';
@@ -212,8 +212,8 @@ export function EventDiscoveryContainer() {
               <button
                 onClick={() => setViewType('grid')}
                 className={`px-3 py-1.5 text-sm ${viewType === 'grid'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
                   } rounded-l-md border-r`}
               >
                 Grid
@@ -221,8 +221,8 @@ export function EventDiscoveryContainer() {
               <button
                 onClick={() => setViewType('list')}
                 className={`px-3 py-1.5 text-sm ${viewType === 'list'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
                   } rounded-r-md`}
               >
                 List
@@ -278,11 +278,11 @@ export function EventDiscoveryContainer() {
       {/* Events Display */}
       {!eventsLoading && !error && sortedEvents.length > 0 && (
         <div className={`grid gap-6 ${viewType === 'grid'
-            ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-            : 'grid-cols-1'
+          ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+          : 'grid-cols-1'
           }`}>
           {sortedEvents.map((event) => (
-            <EnhancedEventCard
+            <EventCard
               key={event.id}
               event={event}
               layout={viewType}
