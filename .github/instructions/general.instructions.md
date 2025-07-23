@@ -13,13 +13,87 @@ This project follows Clean Architecture principles as described in "How To Achie
 2. **Clean Architecture Layers**: Maintain strict separation between Views, Use Cases, and Repositories
 3. **Dependency Direction**: Dependencies should point inward (Views → Use Cases → Repositories)
 4. **Framework Independence**: Business logic should not depend on React or any UI framework
+5. **Type Safety**: NEVER use `any` type - always use proper TypeScript types
+6. **Accessibility**: Use semantic HTML first, add ARIA only when no semantic equivalent exists
+7. **Validation**: Always validate external data with Zod schemas
 
 ## Technology Stack
 
-- **State Management**: Zustand (primary), or useContext + useReducer (fallback)
-- **Data Fetching**: React Query (TanStack Query)
-- **UI Components**: shadcn/ui
-- **TypeScript**: Strict mode enabled
+- **TypeScript**: Strict mode enabled - NEVER use `any` type
+- **UI Components**: Shadcn/ui (primary UI library)
+- **Styling**: Tailwind CSS with responsive design patterns
+- **Validation**: Zod for schema validation and runtime type checking
+- **Data Fetching**: TanStack Query for client state management
+- **State Management**: Zustand (global state), React hooks (local state)
+
+## Code Style Rules
+
+- **NEVER use `any` type**: Always use proper TypeScript types with strict mode enabled
+- **Function Components**: Prefer function components over class components
+- **Data Validation**: Always validate external data with Zod schemas
+- **Error Boundaries**: Include error and pending boundaries for all routes
+- **Accessibility**: Follow accessibility best practices with ARIA attributes
+- **Component Preference**: Always prefer Shadcn/ui components over custom ones
+
+## Accessibility
+
+Use semantic HTML first. Only add ARIA when no semantic equivalent exists:
+
+```typescript
+// ✅ Good: Semantic HTML with minimal ARIA
+<button onClick={toggleMenu}>
+  <MenuIcon aria-hidden="true" />
+  <span className="sr-only">Toggle Menu</span>
+</button>
+
+// ✅ Good: ARIA only when needed (for dynamic states)
+<button
+  aria-expanded={isOpen}
+  aria-controls="menu"
+  onClick={toggleMenu}
+>
+  Menu
+</button>
+
+// ✅ Good: Semantic form elements
+<label htmlFor="email">Email Address</label>
+<input id="email" type="email" />
+{errors.email && (
+  <p role="alert">{errors.email}</p>
+)}
+```
+
+## Adding Components
+
+Install Shadcn components when needed:
+
+```bash
+npx shadcn@latest add button card input dialog
+```
+
+## TypeScript Standards
+
+- **Strict Mode**: Always use TypeScript strict mode with proper type definitions
+- **Type Guards**: Implement proper error handling with type guards
+- **Zod Integration**: Use Zod for runtime type validation and schema definitions
+- **Clear Interfaces**: Define clear type definitions for all data structures
+- **No Any Types**: NEVER use `any` type - always define proper types
+
+## Tailwind CSS Guidelines
+
+- **Responsive Design**: Use mobile-first approach with responsive utilities
+- **Consistent Color Palette**: Follow design system color schemes
+- **Dark Mode Support**: Implement dark mode variants where applicable
+- **Semantic Structure**: Maintain semantic HTML structure with Tailwind classes
+- **Container Queries**: Use container queries for component-level responsive design
+
+## TanStack Query Integration
+
+- **Server State**: Use for all server state management and caching
+- **Query Keys**: Define consistent query key patterns
+- **Error Handling**: Implement proper retry logic and error states
+- **Cache Invalidation**: Implement strategic cache invalidation
+- **Optimistic Updates**: Use for better user experience where appropriate
 
 ## Folder Structure
 
@@ -460,15 +534,57 @@ app/src/products/
 
 ## Best Practices
 
+### Architecture
 1. **Feature Isolation**: Keep all feature-related code within its folder, including models
 2. **Container/Presentation Separation**: Keep containers for orchestration and presentation for pure UI
-3. **Hook Composition**: Compose smaller hooks to create more complex business logic
-4. **Repository Naming**: Use verb-noun pattern (getUser, createProduct, updateProfile, deleteItem)
-5. **Model Organization**: Keep models close to the feature that uses them
-6. **Error Boundaries**: Implement error boundaries at container level
-7. **Loading States**: Always handle loading states with shadcn/ui Skeleton components
-8. **Type Safety**: Import types from the feature's models folder
-9. **Cross-Feature Types**: For shared types across features, consider a shared/common feature folder
+3. **App Router**: Use server and client components appropriately
+4. **Error Boundaries**: Implement error boundaries at container level
+5. **React Server Components**: Use by default, client components only when needed
+6. **Static Optimization**: Leverage static optimization where possible
+
+### Development Standards
+7. **Hook Composition**: Compose smaller hooks to create more complex business logic
+8. **Repository Naming**: Use verb-noun pattern (getUser, createProduct, updateProfile, deleteItem)
+9. **Model Organization**: Keep models close to the feature that uses them
+10. **Loading States**: Always handle loading states with shadcn/ui Skeleton components
+11. **Type Safety**: Import types from the feature's models folder
+12. **Cross-Feature Types**: For shared types across features, consider a shared/common feature folder
+
+### Data & State Management
+13. **Server State**: Use React Server Components for direct database queries
+14. **Client State**: Use React hooks for local state, Zustand for global state
+15. **Optimistic Updates**: Implement where appropriate for better UX
+16. **Cache Strategies**: Implement proper cache invalidation strategies
+17. **React Suspense**: Use for loading states
+
+### Security & Performance
+18. **Input Validation**: All external data must be validated with Zod schemas
+19. **Authentication**: Proper authentication checks on all protected routes
+20. **Image Optimization**: Use next/image for all images
+21. **Font Optimization**: Use next/font for custom fonts
+22. **Bundle Optimization**: Implement proper code splitting
+23. **Rate Limiting**: Implement on API routes where needed
+
+### Styling & Accessibility
+24. **Responsive Design**: Use Tailwind's responsive patterns consistently
+25. **Dark Mode**: Support dark mode where applicable
+26. **Semantic HTML**: Always use semantic HTML structure
+27. **Container Queries**: Follow container queries best practices
+
+## Implementation Process
+
+When implementing new features, follow this systematic approach:
+
+1. **Plan Component Hierarchy**: Design the component structure and identify server vs client components
+2. **Define Types and Interfaces**: Create all necessary TypeScript types and Zod schemas
+3. **Implement Server-Side Logic**: Build server actions, API routes, and database operations
+4. **Build Client Components**: Create presentation components with proper TypeScript types
+5. **Add Error Handling**: Implement error boundaries and proper error states
+6. **Implement Responsive Styling**: Use Tailwind CSS with mobile-first approach
+7. **Add Loading States**: Implement loading states with React Suspense and Skeleton components
+8. **Write Tests**: Create comprehensive tests for business logic and components
+9. **Validate Accessibility**: Ensure proper semantic HTML and ARIA attributes
+10. **Performance Optimization**: Optimize images, fonts, and bundle size
 
 ## Import Paths
 
