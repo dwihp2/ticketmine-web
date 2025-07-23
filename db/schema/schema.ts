@@ -11,27 +11,9 @@ import {
   uniqueIndex
 } from 'drizzle-orm/pg-core';
 
-// Users Table - Enhanced with profile information
-export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
-  password: varchar('password', { length: 255 }).notNull(),
-  name: varchar('name', { length: 255 }).notNull(),
-  phone: varchar('phone', { length: 20 }),
-  avatar_url: varchar('avatar_url', { length: 500 }),
-  bio: text('bio'),
-  location: varchar('location', { length: 255 }),
-  date_of_birth: timestamp('date_of_birth'),
-  is_active: boolean('is_active').default(true),
-  is_verified: boolean('is_verified').default(false),
-  email_verified_at: timestamp('email_verified_at'),
-  last_login_at: timestamp('last_login_at'),
-  created_at: timestamp('created_at').defaultNow(),
-  updated_at: timestamp('updated_at').defaultNow(),
-}, (table) => ({
-  emailIdx: uniqueIndex('users_email_idx').on(table.email),
-  phoneIdx: index('users_phone_idx').on(table.phone),
-}));
+// Import Better Auth tables from the dedicated auth schema file
+import { users } from '../../auth-schema';
+export { users, sessions, accounts, verifications } from '../../auth-schema';
 
 // Venues Table - Separate venue management
 export const venues = pgTable('venues', {
@@ -111,7 +93,7 @@ export const events = pgTable('events', {
   sale_end_date: timestamp('sale_end_date'),
   total_capacity: integer('total_capacity'),
   sold_tickets: integer('sold_tickets').default(0),
-  created_by: integer('created_by').references(() => users.id),
+  created_by: text('created_by').references(() => users.id),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
 }, (table) => ({
@@ -175,7 +157,7 @@ export const promotionalCodes = pgTable('promotional_codes', {
   valid_until: timestamp('valid_until').notNull(),
   applicable_events: text('applicable_events'), // JSON array of event IDs
   is_active: boolean('is_active').default(true),
-  created_by: integer('created_by').references(() => users.id),
+  created_by: text('created_by').references(() => users.id),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
 }, (table) => ({
@@ -187,7 +169,7 @@ export const promotionalCodes = pgTable('promotional_codes', {
 export const orders = pgTable('orders', {
   id: serial('id').primaryKey(),
   order_number: varchar('order_number', { length: 50 }).notNull().unique(),
-  user_id: integer('user_id').references(() => users.id).notNull(),
+  user_id: text('user_id').references(() => users.id).notNull(),
   event_id: integer('event_id').references(() => events.id).notNull(),
   subtotal: decimal('subtotal', { precision: 10, scale: 2 }).notNull(),
   fees: decimal('fees', { precision: 10, scale: 2 }).default('0.00'),
@@ -237,7 +219,7 @@ export const tickets = pgTable('tickets', {
   qr_code: varchar('qr_code', { length: 255 }).notNull(),
   status: varchar('status', { length: 50 }).default('valid'), // valid, used, cancelled, transferred
   used_at: timestamp('used_at'),
-  transferred_to: integer('transferred_to').references(() => users.id),
+  transferred_to: text('transferred_to').references(() => users.id),
   transferred_at: timestamp('transferred_at'),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
@@ -251,7 +233,7 @@ export const tickets = pgTable('tickets', {
 // Waitlists Table - For sold-out events
 export const waitlists = pgTable('waitlists', {
   id: serial('id').primaryKey(),
-  user_id: integer('user_id').references(() => users.id).notNull(),
+  user_id: text('user_id').references(() => users.id).notNull(),
   event_id: integer('event_id').references(() => events.id).notNull(),
   ticket_type_id: integer('ticket_type_id').references(() => ticketTypes.id),
   quantity: integer('quantity').notNull(),
@@ -270,11 +252,11 @@ export const waitlists = pgTable('waitlists', {
 export const resaleListings = pgTable('resale_listings', {
   id: serial('id').primaryKey(),
   ticket_id: integer('ticket_id').references(() => tickets.id).notNull(),
-  seller_id: integer('seller_id').references(() => users.id).notNull(),
+  seller_id: text('seller_id').references(() => users.id).notNull(),
   asking_price: decimal('asking_price', { precision: 10, scale: 2 }).notNull(),
   status: varchar('status', { length: 50 }).default('active'), // active, sold, cancelled, expired
   expires_at: timestamp('expires_at'),
-  sold_to: integer('sold_to').references(() => users.id),
+  sold_to: text('sold_to').references(() => users.id),
   sold_at: timestamp('sold_at'),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
@@ -287,7 +269,7 @@ export const resaleListings = pgTable('resale_listings', {
 // Analytics Events Table - For tracking user behavior
 export const analyticsEvents = pgTable('analytics_events', {
   id: serial('id').primaryKey(),
-  user_id: integer('user_id').references(() => users.id),
+  user_id: text('user_id').references(() => users.id),
   event_type: varchar('event_type', { length: 100 }).notNull(),
   event_data: text('event_data'), // JSON string of event data
   page_url: varchar('page_url', { length: 500 }),
@@ -305,13 +287,13 @@ export const analyticsEvents = pgTable('analytics_events', {
 export const supportTickets = pgTable('support_tickets', {
   id: serial('id').primaryKey(),
   ticket_number: varchar('ticket_number', { length: 50 }).notNull().unique(),
-  user_id: integer('user_id').references(() => users.id).notNull(),
+  user_id: text('user_id').references(() => users.id).notNull(),
   subject: varchar('subject', { length: 255 }).notNull(),
   description: text('description').notNull(),
   priority: varchar('priority', { length: 20 }).default('medium'), // low, medium, high, urgent
   status: varchar('status', { length: 50 }).default('open'), // open, in_progress, resolved, closed
   category: varchar('category', { length: 100 }),
-  assigned_to: integer('assigned_to').references(() => users.id),
+  assigned_to: text('assigned_to').references(() => users.id),
   resolved_at: timestamp('resolved_at'),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
@@ -326,7 +308,7 @@ export const supportTickets = pgTable('support_tickets', {
 export const supportMessages = pgTable('support_messages', {
   id: serial('id').primaryKey(),
   ticket_id: integer('ticket_id').references(() => supportTickets.id).notNull(),
-  user_id: integer('user_id').references(() => users.id).notNull(),
+  user_id: text('user_id').references(() => users.id).notNull(),
   message: text('message').notNull(),
   is_internal: boolean('is_internal').default(false),
   attachments: text('attachments'), // JSON array of file URLs

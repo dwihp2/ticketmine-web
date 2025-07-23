@@ -8,6 +8,34 @@
       "when": 1752854939729,
       "tag": "0000_tidy_odin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1753264089420,
+      "tag": "0001_nostalgic_christian_walker",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1753266127552,
+      "tag": "0002_last_rage",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1753273078872,
+      "tag": "0003_better-auth-compatible-schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1753273901248,
+      "tag": "0004_use-auth-schema-reference",
+      "breakpoints": true
     }
   ]
 }
