@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "registry:build": "shadcn build"
+    "registry:build": "shadcn build",
+    "seed:custom": "tsx db/seed/run-custom-users.ts",
+    "seed:full": "tsx db/seed/run-seed.ts",
+    "verify:users": "tsx db/seed/verify-custom-users.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -18,12 +21,16 @@
     "@radix-ui/react-popover": "^1.1.14",
     "@radix-ui/react-radio-group": "^1.3.7",
     "@radix-ui/react-select": "^2.2.5",
+    "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
     "@radix-ui/react-tabs": "^1.1.12",
+    "@radix-ui/react-toggle": "^1.1.9",
+    "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.83.0",
     "bcryptjs": "^3.0.2",
+    "better-auth": "^1.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cookie": "^1.0.2",
@@ -49,6 +56,7 @@
     "zustand": "^5.0.6"
   },
   "devDependencies": {
+    "@better-auth/cli": "^1.3.3",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
