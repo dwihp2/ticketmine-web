@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useEventDetail } from '../../usecases/useEventDetail';
 import { UpsertEventForm } from '../presentation/UpsertEventForm';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ArrowLeft } from 'lucide-react';
 
 interface EventEditContainerProps {
   eventId: string;
@@ -37,18 +40,20 @@ export function EventEditContainer({ eventId }: EventEditContainerProps) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-red-50 border border-red-200 rounded-md p-4">
-            <h3 className="text-lg font-medium text-red-800">Error Loading Event</h3>
-            <p className="text-red-600 mt-2">
+          <Alert variant="destructive">
+            <AlertTitle>Error Loading Event</AlertTitle>
+            <AlertDescription>
               {error instanceof Error ? error.message : 'Failed to load event details'}
-            </p>
-            <button
-              onClick={() => router.push('/events/manage')}
-              className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-            >
-              Back to Manage Events
-            </button>
-          </div>
+            </AlertDescription>
+            <div className="mt-4">
+              <Button
+                variant="destructive"
+                onClick={() => router.push('/events/manage')}
+              >
+                Back to Manage Events
+              </Button>
+            </div>
+          </Alert>
         </div>
       </div>
     );
@@ -58,18 +63,20 @@ export function EventEditContainer({ eventId }: EventEditContainerProps) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-            <h3 className="text-lg font-medium text-yellow-800">Event Not Found</h3>
-            <p className="text-yellow-600 mt-2">
+          <Alert variant="default">
+            <AlertTitle>Event Not Found</AlertTitle>
+            <AlertDescription>
               The event with ID {eventId} could not be found.
-            </p>
-            <button
-              onClick={() => router.push('/events/manage')}
-              className="mt-4 px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
-            >
-              Back to Manage Events
-            </button>
-          </div>
+            </AlertDescription>
+            <div className="mt-4">
+              <Button
+                variant="secondary"
+                onClick={() => router.push('/events/manage')}
+              >
+                Back to Manage Events
+              </Button>
+            </div>
+          </Alert>
         </div>
       </div>
     );
@@ -78,12 +85,14 @@ export function EventEditContainer({ eventId }: EventEditContainerProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <button
+        <Button
+          variant="ghost"
           onClick={() => router.push('/events/manage')}
-          className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
+          className="gap-2"
         >
-          ← Back to Manage Events
-        </button>
+          <ArrowLeft className="h-4 w-4" />
+          Back to Manage Events
+        </Button>
       </div>
 
       <UpsertEventForm

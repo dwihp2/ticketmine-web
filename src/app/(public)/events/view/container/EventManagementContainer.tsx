@@ -5,6 +5,9 @@ import { useEvents } from '../../usecases/useEvents';
 import { EventManagementCard } from '../presentation/EventManagementCard';
 import { UpsertEventForm } from '../presentation/UpsertEventForm';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ArrowLeft, Plus } from 'lucide-react';
 
 export function EventManagementContainer() {
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -22,12 +25,14 @@ export function EventManagementContainer() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <button
+          <Button
+            variant="ghost"
             onClick={handleCreateCancel}
-            className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
+            className="gap-2"
           >
-            ← Back to Management
-          </button>
+            <ArrowLeft className="h-4 w-4" />
+            Back to Management
+          </Button>
         </div>
         <UpsertEventForm onSuccess={handleCreateSuccess} onCancel={handleCreateCancel} />
       </div>
@@ -41,13 +46,13 @@ export function EventManagementContainer() {
           <h1 className="text-3xl font-bold">Event Management</h1>
           <p className="text-gray-600 mt-2">Create, edit, and manage your events</p>
         </div>
-        <button
+        <Button
           onClick={() => setShowCreateForm(true)}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2"
+          className="gap-2"
         >
-          <span className="text-lg">+</span>
+          <Plus className="h-4 w-4" />
           Create New Event
-        </button>
+        </Button>
       </div>
 
       {isLoading && (
@@ -59,10 +64,12 @@ export function EventManagementContainer() {
       )}
 
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
-          <p className="font-bold">Error loading events</p>
-          <p>{error.message}</p>
-        </div>
+        <Alert variant="destructive">
+          <AlertDescription>
+            <p className="font-bold">Error loading events</p>
+            <p>{error.message}</p>
+          </AlertDescription>
+        </Alert>
       )}
 
       {data && data.length === 0 && (
@@ -70,12 +77,11 @@ export function EventManagementContainer() {
           <div className="text-6xl mb-4">🎪</div>
           <h3 className="text-xl font-semibold text-gray-700 mb-2">No Events Found</h3>
           <p className="text-gray-500 mb-6">Get started by creating your first event!</p>
-          <button
+          <Button
             onClick={() => setShowCreateForm(true)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Create Your First Event
-          </button>
+          </Button>
         </div>
       )}
 

@@ -1,10 +1,11 @@
-import { RegisterContainer } from '@/app/(auth)/shared/view/container/RegisterContainer';
+import { RegisterForm } from '@/app/(auth)/shared/view/presentation/RegisterForm';
 
 export default function RegisterPage() {
   return (
-    <div className="max-w-md mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6">Register</h1>
-      <RegisterContainer />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <RegisterForm />
+      </div>
     </div>
   );
 }

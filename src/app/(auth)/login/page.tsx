@@ -1,10 +1,11 @@
-import { LoginContainer } from '@/app/(auth)/shared/view/container/LoginContainer';
+import { LoginForm } from '@/app/(auth)/shared/view/presentation/LoginForm';
 
 export default function LoginPage() {
   return (
-    <div className="max-w-md mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6">Login</h1>
-      <LoginContainer />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <LoginForm />
+      </div>
     </div>
   );
 }

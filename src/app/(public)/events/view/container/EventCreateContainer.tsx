@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { UpsertEventForm } from '../presentation/UpsertEventForm';
 import { EventListContainer } from './EventListContainer';
+import { Button } from '@/components/ui/button';
 
 export function EventCreateContainer() {
   const [showForm, setShowForm] = useState(false);
@@ -27,12 +28,11 @@ export function EventCreateContainer() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Event Management</h1>
-        <button
+        <Button
           onClick={() => setShowForm(true)}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Create New Event
-        </button>
+        </Button>
       </div>
 
       <EventListContainer />

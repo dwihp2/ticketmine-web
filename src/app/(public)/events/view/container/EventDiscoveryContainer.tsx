@@ -5,6 +5,9 @@ import { useEvents } from '../../usecases/useEvents';
 import { useVenues } from '../../usecases/useVenues';
 import { EventCard } from '../presentation/EventCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import Link from 'next/link';
 import type { Event } from '../../models/interfaces/event';
 
@@ -199,35 +202,24 @@ export function EventDiscoveryContainer() {
 
           <div className="flex items-center gap-4">
             {hasActiveFilters && (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={clearFilters}
-                className="text-sm text-blue-600 hover:text-blue-800 underline"
               >
                 Clear All Filters
-              </button>
+              </Button>
             )}
 
             {/* View Toggle */}
-            <div className="flex border rounded-md">
-              <button
-                onClick={() => setViewType('grid')}
-                className={`px-3 py-1.5 text-sm ${viewType === 'grid'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
-                  } rounded-l-md border-r`}
-              >
+            <ToggleGroup type="single" value={viewType} onValueChange={(value) => value && setViewType(value as 'grid' | 'list')}>
+              <ToggleGroupItem value="grid" aria-label="Grid view">
                 Grid
-              </button>
-              <button
-                onClick={() => setViewType('list')}
-                className={`px-3 py-1.5 text-sm ${viewType === 'list'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
-                  } rounded-r-md`}
-              >
+              </ToggleGroupItem>
+              <ToggleGroupItem value="list" aria-label="List view">
                 List
-              </button>
-            </div>
+              </ToggleGroupItem>
+            </ToggleGroup>
           </div>
         </div>
       </div>
@@ -243,12 +235,12 @@ export function EventDiscoveryContainer() {
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <h3 className="text-lg font-medium text-red-800">Error Loading Events</h3>
-          <p className="text-red-600 mt-2">
+        <Alert variant="destructive">
+          <AlertTitle>Error Loading Events</AlertTitle>
+          <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load events'}
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
       {/* No Events State */}
@@ -265,12 +257,11 @@ export function EventDiscoveryContainer() {
             }
           </p>
           {hasActiveFilters && (
-            <button
+            <Button
               onClick={clearFilters}
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Clear All Filters
-            </button>
+            </Button>
           )}
         </div>
       )}
