@@ -20,9 +20,8 @@ const verifyCustomUsers = async () => {
         console.log(`✅ Found user: ${userInfo.email}`);
         console.log(`   - Name: ${userInfo.name}`);
         console.log(`   - Role: ${userInfo.role}`);
-        console.log(`   - Active: ${userInfo.is_active}`);
-        console.log(`   - Verified: ${userInfo.is_verified}`);
-        console.log(`   - Created: ${userInfo.created_at}`);
+        console.log(`   - Email Verified: ${userInfo.emailVerified}`);
+        console.log(`   - Created: ${userInfo.createdAt}`);
         console.log('');
       } else {
         console.log(`❌ User not found: ${email}`);

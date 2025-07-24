@@ -6,17 +6,28 @@ import type { CreateEventInput } from '../models/interfaces/create-event';
 
 export async function createEvent(input: CreateEventInput) {
   try {
+    // Validate field lengths to prevent database errors
+    const truncatedInput = {
+      name: input.name?.substring(0, 255) || '',
+      description: input.description?.substring(0, 10000) || '',
+      short_description: input.short_description?.substring(0, 500) || '',
+      age_restriction: input.age_restriction?.substring(0, 50) || '',
+      dress_code: input.dress_code?.substring(0, 255) || '',
+      image_url: input.image_url?.substring(0, 500) || '',
+      banner_url: input.banner_url?.substring(0, 500) || '',
+    };
+
     const result = await db.insert(events).values({
-      name: input.name,
-      description: input.description,
-      short_description: input.short_description,
+      name: truncatedInput.name,
+      description: truncatedInput.description,
+      short_description: truncatedInput.short_description,
       start_date: input.start_date,
       end_date: input.end_date,
       doors_open: input.doors_open,
-      age_restriction: input.age_restriction,
-      dress_code: input.dress_code,
-      image_url: input.image_url,
-      banner_url: input.banner_url,
+      age_restriction: truncatedInput.age_restriction,
+      dress_code: truncatedInput.dress_code,
+      image_url: truncatedInput.image_url,
+      banner_url: truncatedInput.banner_url,
       status: 'draft', // New events start as draft
       is_featured: input.is_featured,
       max_tickets_per_user: input.max_tickets_per_user,
