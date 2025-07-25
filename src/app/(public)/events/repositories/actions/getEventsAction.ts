@@ -58,53 +58,56 @@ export async function getEventsAction(options: GetEventsOptions = {}) {
     );
   }
 
-  // Build the base query
-  let query = db
-    .select({
-      id: events.id,
-      name: events.name,
-      description: events.description,
-      short_description: events.short_description,
-      start_date: events.start_date,
-      end_date: events.end_date,
-      doors_open: events.doors_open,
-      age_restriction: events.age_restriction,
-      dress_code: events.dress_code,
-      image_url: events.image_url,
-      banner_url: events.banner_url,
-      status: events.status,
-      is_featured: events.is_featured,
-      max_tickets_per_user: events.max_tickets_per_user,
-      sale_start_date: events.sale_start_date,
-      sale_end_date: events.sale_end_date,
-      total_capacity: events.total_capacity,
-      sold_tickets: events.sold_tickets,
-      created_at: events.created_at,
-      updated_at: events.updated_at,
-      venue: {
-        id: venues.id,
-        name: venues.name,
-        address: venues.address,
-        city: venues.city,
-        state: venues.state,
-        country: venues.country,
-        capacity: venues.capacity,
-        image_url: venues.image_url,
-      },
-      primary_artist: {
-        id: artists.id,
-        name: artists.name,
-        genre: artists.genre,
-        image_url: artists.image_url,
-      },
-    })
-    .from((events) as typeof query)
+  // Build the query conditionally based on filters
+  const selectFields = {
+    id: events.id,
+    name: events.name,
+    description: events.description,
+    short_description: events.short_description,
+    start_date: events.start_date,
+    end_date: events.end_date,
+    doors_open: events.doors_open,
+    age_restriction: events.age_restriction,
+    dress_code: events.dress_code,
+    image_url: events.image_url,
+    banner_url: events.banner_url,
+    status: events.status,
+    is_featured: events.is_featured,
+    max_tickets_per_user: events.max_tickets_per_user,
+    sale_start_date: events.sale_start_date,
+    sale_end_date: events.sale_end_date,
+    total_capacity: events.total_capacity,
+    sold_tickets: events.sold_tickets,
+    created_at: events.created_at,
+    updated_at: events.updated_at,
+    venue: {
+      id: venues.id,
+      name: venues.name,
+      address: venues.address,
+      city: venues.city,
+      state: venues.state,
+      country: venues.country,
+      capacity: venues.capacity,
+      image_url: venues.image_url,
+    },
+    primary_artist: {
+      id: artists.id,
+      name: artists.name,
+      genre: artists.genre,
+      image_url: artists.image_url,
+    },
+  };
+
+  let queryBuilder = db
+    .select(selectFields)
+    .from(events)
     .leftJoin(venues, eq(events.venue_id, venues.id))
     .leftJoin(artists, eq(events.primary_artist_id, artists.id));
 
-  // Apply where clauses
+  // Apply where clauses if any
   if (whereClauses.length) {
-    query = query.where(and(...whereClauses));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryBuilder = (queryBuilder as any).where(and(...whereClauses));
   }
 
   // Apply ordering
@@ -119,7 +122,8 @@ export async function getEventsAction(options: GetEventsOptions = {}) {
                   options.sortBy === 'artist' ? artists.name :
                     options.sortBy === 'created_at' ? events.created_at : undefined;
     if (sortColumn) {
-      query = query.orderBy(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      queryBuilder = (queryBuilder as any).orderBy(
         options.sortOrder === 'desc' ? desc(sortColumn) : asc(sortColumn)
       );
     }
@@ -127,12 +131,14 @@ export async function getEventsAction(options: GetEventsOptions = {}) {
 
   // Apply pagination
   if (typeof options.limit === 'number') {
-    query = query.limit(options.limit);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryBuilder = (queryBuilder as any).limit(options.limit);
   }
   if (typeof options.offset === 'number') {
-    query = query.offset(options.offset);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryBuilder = (queryBuilder as any).offset(options.offset);
   }
 
-  const results = await query;
+  const results = await queryBuilder;
   return results;
 }

@@ -1,4 +1,4 @@
-import { Calendar, Home, Search, Settings, Shield, Users, Plus, BarChart3, Tag } from 'lucide-react';
+import { Calendar, Home, Search, Settings, Shield, Users, Plus, BarChart3, Tag, LayoutDashboard } from 'lucide-react';
 import type { UserRole } from '@/app/(auth)/shared/models/interfaces/user';
 
 export interface NavigationItem {
@@ -40,6 +40,17 @@ export const publicNavigation: NavigationItem[] = [
 ];
 
 export const authenticatedNavigation: NavigationSection[] = [
+  {
+    title: 'Overview',
+    items: [
+      {
+        label: 'Dashboard',
+        href: '/dashboard',
+        icon: LayoutDashboard,
+        description: 'Your account overview',
+      },
+    ],
+  },
   {
     title: 'Personal',
     items: [
