@@ -14,7 +14,7 @@ export function useAuth() {
 
   // Update store when query data changes
   if (data !== user) {
-    setUser(data);
+    setUser(data || null);
   }
 
   return {
